@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns'
+import Image from 'next/image';
 
 export default function EnhancedMatchCard({ match, selectedBets, toggleBet }) {
   const isLive = match.status === 'live';
@@ -14,7 +15,13 @@ export default function EnhancedMatchCard({ match, selectedBets, toggleBet }) {
       <CardHeader className="bg-gray-700 p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <img src={match.leagueLogo} alt={`${match.league} logo`} className="w-6 h-6 object-contain" />
+          <Image
+            src={match.leagueLogo}
+            alt={`${match.league} logo`}
+            width={24}
+            height={24}
+            className="w-6 h-6 object-contain"
+          />
             <CardTitle className="text-white text-xl font-bold">{match.league}</CardTitle>
           </div>
           <div className="flex items-center space-x-2">
@@ -40,7 +47,13 @@ export default function EnhancedMatchCard({ match, selectedBets, toggleBet }) {
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-6">
           <div className="flex flex-col items-center space-y-2 w-1/3">
-            <img src={match.homeTeam.logo} alt={match.homeTeam.name} className="w-20 h-20 object-contain" />
+          <Image
+            src={match.homeTeam.logo}
+            alt={`${match.homeTeam.name} logo`}
+            width={32}
+            height={32}
+            className="w-8 h-8 object-contain"
+          />
             <span className="text-white font-semibold text-center">{match.homeTeam.name}</span>
             {isLive && <span className="text-2xl font-bold text-white">{match.score.home}</span>}
           </div>
@@ -51,9 +64,15 @@ export default function EnhancedMatchCard({ match, selectedBets, toggleBet }) {
                   LIVE
                 </div>
                 <span className="text-sm text-gray-400">
-                  {match.currentMinute}' 
-                  {match.additionalTime > 0 && `+${match.additionalTime}`}
-                </span>
+            {isLive ? (
+              <>
+                {match.currentMinute}&apos; 
+                {match.additionalTime > 0 && `+${match.additionalTime}`}
+              </>
+            ) : (
+              match.time
+            )}
+          </span>
               </div>
             ) : (
               <div className="relative w-16 h-16 flex items-center justify-center">
@@ -64,7 +83,13 @@ export default function EnhancedMatchCard({ match, selectedBets, toggleBet }) {
             {!isLive && <span className="text-sm text-gray-400 mt-2">{format(match.date, 'MMMM d')}</span>}
           </div>
           <div className="flex flex-col items-center space-y-2 w-1/3">
-            <img src={match.awayTeam.logo} alt={match.awayTeam.name} className="w-20 h-20 object-contain" />
+          <Image
+            src={match.awayTeam.logo}
+            alt={`${match.awayTeam.name} logo`}
+            width={32}
+            height={32}
+            className="w-8 h-8 object-contain"
+          />
             <span className="text-white font-semibold text-center">{match.awayTeam.name}</span>
             {isLive && <span className="text-2xl font-bold text-white">{match.score.away}</span>}
           </div>

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Bell, CreditCard, Menu, Home, LogOut, Settings, User, X, ExternalLink, Gift } from "lucide-react"
+import Image from 'next/image';
 
 const affiliatedBookmakers = [
   { id: 1, name: "BetMaster", logo: "/placeholder.svg?height=80&width=80", description: "Amplia variedad de deportes y mercados" },
@@ -48,7 +49,13 @@ export default function Component() {
                 <Card key={bookmaker.id} className="bg-gray-800 border-gray-700">
                   <CardHeader>
                     <div className="flex items-center space-x-4">
-                      <img src={bookmaker.logo} alt={`Logo de ${bookmaker.name}`} className="w-16 h-16 rounded-full" />
+                    <Image
+  src={bookmaker.logo}
+  alt={`Logo de ${bookmaker.name}`}
+  width={64}
+  height={64}
+  className="w-16 h-16 rounded-full"
+/>
                       <CardTitle className="text-white">{bookmaker.name}</CardTitle>
                     </div>
                   </CardHeader>

@@ -1,4 +1,4 @@
-
+import Image from 'next/image';
 
 function FeatureCard({ title, description, media, mediaType }) {
   return (
@@ -10,7 +10,14 @@ function FeatureCard({ title, description, media, mediaType }) {
             Your browser does not support the video tag.
           </video>
         ) : (
-          <img src={media} alt={title} className="w-full h-full object-cover" />
+          <Image
+          src={media}
+          alt={title}
+          layout="fill"
+          objectFit="cover"
+          className="w-full h-full"
+          priority
+        />
         )}
       </div>
       <div className="p-6">

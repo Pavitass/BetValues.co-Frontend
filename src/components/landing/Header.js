@@ -2,6 +2,7 @@
 import { useState } from 'react'; // Agrega useState
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +18,15 @@ export default function Header() {
     >
       <div className="container mx-auto flex flex-wrap justify-between items-center px-4 relative">
         <div className="text-xl font-bold">
-          <img src="/logo.png" alt="Logo" className="h-16 sm:h-20 md:h-24 w-auto" />
+        
+        <Image
+  src="/logo.png"
+  alt="Logo"
+  width={96}
+  height={96}
+  className="h-16 sm:h-20 md:h-24 w-auto"
+  priority
+/>
         </div>
         <div className="flex items-center space-x-4">
           <button
