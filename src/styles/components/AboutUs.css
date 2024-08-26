@@ -1,0 +1,136 @@
+.cards-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 300px; /* Tamaño base para pantallas pequeñas */
+  height: 400px; /* Altura base para pantallas pequeñas */
+  perspective: 1000px;
+  position: relative;
+  margin: 10px;
+}
+
+.card-front, .card-back {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  position: absolute;
+  backface-visibility: hidden;
+  transition: transform 0.6s;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.card-front {
+  background-color: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-back {
+  background-color: #1e1e1e;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card:hover .card-front {
+  transform: rotateY(180deg);
+}
+
+.card:hover .card-back {
+  transform: rotateY(360deg);
+}
+
+.rotate-card .card-front {
+  transform: rotateY(180deg);
+}
+
+.rotate-card .card-back {
+  transform: rotateY(360deg);
+}
+
+.card-number {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  color: #8b8b8b;
+  font-size: 1.5em; 
+}
+
+.card-title {
+  color: white;
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.card-info {
+  color: #8b8b8b;
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+
+/* Ajustes para el footer de la tarjeta */
+.card-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px; /* Ajusta según tus necesidades */
+  background-color: transparent;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* Ajustes para pantallas más grandes */
+@media (min-width: 768px) {
+  .card {
+    max-width: 350px;
+    height: 500px;
+  }
+  
+  .card-number {
+    font-size: 2em;
+  }
+  
+  .card-title {
+    font-size: 2em;
+  }
+  
+  .card-info {
+    font-size: 1.5em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card {
+    max-width: 400px;
+    height: 600px;
+  }
+  
+  .card-number {
+    font-size: 2.5em;
+  }
+  
+  .card-title {
+    font-size: 2.5em;
+  }
+  
+  .card-info {
+    font-size: 2em;
+  }
+}
