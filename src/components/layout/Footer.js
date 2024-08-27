@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Logo and Social Media */}
           <div className="flex flex-col items-center ">
-            <Image src="/logo.png" alt="BetValues.co Logo" width={150} height={120} className="h-42 w-auto mb-4" />
+            <Image src="/logo.png" alt="BetValues.co Logo" width={200} height={200} className="h-42 w-auto mb-4" />
             <div className="flex space-x-4 mt-4">
               <Link href="#" className="text-gray-400 hover:text-white">
                 <Facebook className="h-6 w-6" />

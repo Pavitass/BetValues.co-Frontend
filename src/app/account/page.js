@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { Bell, CreditCard, Home, LogOut, Settings, User } from "lucide-react"
 import ProtectedRoute from "@/components/ProtectedRoute"
+import Link from "next/link"
 
 export default function Component() {
   return (
@@ -23,9 +24,9 @@ export default function Component() {
           <h2 className="text-3xl font-bold mb-6">Administración de Cuenta</h2>
           <Tabs defaultValue="profile" className="space-y-4">
             <TabsList className="bg-gray-800">
-              <TabsTrigger value="profile" className="text-white data-[state=active]:bg-gray-700">Perfil</TabsTrigger>
-              <TabsTrigger value="subscription" className="text-white data-[state=active]:bg-gray-700">Suscripción</TabsTrigger>
-              <TabsTrigger value="notifications" className="text-white data-[state=active]:bg-gray-700">Notificaciones</TabsTrigger>
+              <TabsTrigger value="profile"  className="text-white data-[state=active]:bg-gray-600 data-[state=active]:text-blue-400">Perfil</TabsTrigger>
+              <TabsTrigger value="subscription"  className="text-white data-[state=active]:bg-gray-600 data-[state=active]:text-blue-400">Suscripción</TabsTrigger>
+              <TabsTrigger value="notifications"  className="text-white data-[state=active]:bg-gray-600 data-[state=active]:text-blue-400">Notificaciones</TabsTrigger>
             </TabsList>
             <TabsContent value="profile">
               <Card className="bg-gray-800 border-gray-700">
@@ -57,11 +58,13 @@ export default function Component() {
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-white">Plan Actual: Premium</span>
-                    <Button variant="outline" className="bg-gray-700 border-gray-600 hover:bg-gray-600 text-white">Cambiar Plan</Button>
+                    <Link href={"/account/suscriptions"}>
+                    <Button variant="outline" className="bg-gray-700 border-gray-600 hover:bg-gray-600 text-white">Cambiar Plan</Button></Link>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-white">Próxima facturación: 01/05/2023</span>
-                    <Button variant="outline" className="bg-gray-700 border-gray-600 hover:bg-gray-600 text-white">Ver Facturas</Button>
+                    <Link href={"/account/billing"}>
+                    <Button variant="outline" className="bg-gray-700 border-gray-600 hover:bg-gray-600 text-white">Ver Facturas</Button></Link>
                   </div>
                 </CardContent>
                 <CardFooter>

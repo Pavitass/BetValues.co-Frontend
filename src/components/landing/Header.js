@@ -22,8 +22,8 @@ export default function Header() {
         <Image
   src="/logo.png"
   alt="Logo"
-  width={96}
-  height={96}
+  width={200}
+  height={200}
   className="h-16 sm:h-20 md:h-24 w-auto"
   priority
 />

@@ -40,8 +40,8 @@ export default function Component() {
         
         <Tabs defaultValue="affiliates" className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-gray-800">
-            <TabsTrigger value="affiliates" className="text-white data-[state=active]:bg-gray-700">Casas de Apuestas Afiliadas</TabsTrigger>
-            <TabsTrigger value="bonuses" className="text-white data-[state=active]:bg-gray-700">Reclamar Bonos</TabsTrigger>
+            <TabsTrigger value="affiliates"   className="text-white data-[state=active]:bg-gray-600 data-[state=active]:text-blue-400">Casas de Apuestas Afiliadas</TabsTrigger>
+            <TabsTrigger value="bonuses"   className="text-white data-[state=active]:bg-gray-600 data-[state=active]:text-blue-400">Reclamar Bonos</TabsTrigger>
           </TabsList>
           <TabsContent value="affiliates">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">

@@ -5,16 +5,18 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Switch } from "@/components/ui/switch"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
-import { X, CalendarIcon, Search, AlertCircle } from "lucide-react"
+import { X, CalendarIcon, Search, AlertCircle, ChevronDown} from "lucide-react"
 import { format } from "date-fns"
+
 import EnhancedMatchCard from '@/components/EnhancedMatchCard'
 import ProtectedRoute from "@/components/ProtectedRoute"
+import CustomSelect from "@/components/ui/customs-select"
 
 export default function ComparatorPage() {
   const [selectedMatch, setSelectedMatch] = React.useState(null)
@@ -36,11 +38,11 @@ export default function ComparatorPage() {
   ]
 
   const bookmakers = [
-    { id: "wplay", name: "Wplay", logo: "/logos/wplay.png" },
-    { id: "betplay", name: "BetPlay", logo: "/logos/betplay.png" },
-    { id: "rushbet", name: "Rushbet", logo: "/logos/rushbet.png" },
-    { id: "codere", name: "Codere", logo: "/logos/codere.png" },
-    { id: "zamba", name: "Zamba", logo: "/logos/zamba.png" },
+    { id: "wplay", name: "Wplay", logo: "https://assets.laliga.com/assets/logos/laliga-v/laliga-v-1200x1200.png", odds:4.2 },
+    { id: "betplay", name: "BetPlay", logo: "https://assets.laliga.com/assets/logos/laliga-v/laliga-v-1200x1200.png", odds: 4},
+    { id: "rushbet", name: "Rushbet", logo: "https://assets.laliga.com/assets/logos/laliga-v/laliga-v-1200x1200.png", odds: 2.5 },
+    { id: "codere", name: "Codere", logo: "https://assets.laliga.com/assets/logos/laliga-v/laliga-v-1200x1200.png", odds: 4.5 },
+    { id: "zamba", name: "Zamba", logo: "https://assets.laliga.com/assets/logos/laliga-v/laliga-v-1200x1200.png", odds: 3.5 },
   ];
 
   const leagues = {
@@ -80,6 +82,8 @@ export default function ComparatorPage() {
     { id: 'add5', type: 'Half-Time/Full-Time: Draw/Home', odds: 6.50 },
   ]
 
+  const currentDate = new Date(); // Fecha actual
+
   const matches = [
     {
       id: '1',
@@ -88,7 +92,7 @@ export default function ComparatorPage() {
       leagueLogo: 'https://logodownload.org/wp-content/uploads/2016/03/premier-league-0.png',
       status: 'live',
       time: '45:00',
-      date: new Date('2024-08-25T14:00:00'),
+      date: currentDate, // Fecha actual
       currentMinute: 47,
       additionalTime: 2,
       homeTeam: { 
@@ -109,7 +113,7 @@ export default function ComparatorPage() {
       leagueLogo: 'https://assets.laliga.com/assets/logos/laliga-v/laliga-v-1200x1200.png',
       status: 'upcoming',
       time: '20:00',
-      date: new Date('2024-08-25T20:00:00'),
+      date: currentDate, // Fecha actual
       homeTeam: { 
         name: 'Barcelona', 
         logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/1200px-FC_Barcelona_%28crest%29.svg.png' 
@@ -128,7 +132,7 @@ export default function ComparatorPage() {
       leagueLogo: 'https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg',
       status: 'finished',
       time: 'FT',
-      date: new Date('2024-08-25T19:00:00'),
+      date: currentDate, // Fecha actual
       homeTeam: { 
         name: 'LA Lakers', 
         logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Los_Angeles_Lakers_logo.svg/1200px-Los_Angeles_Lakers_logo.svg.png' 
@@ -140,48 +144,73 @@ export default function ComparatorPage() {
       score: { home: 108, away: 102 },
       odds: { local: 1.80, empate: 15.00, visitante: 2.20 }
     },
-    {
-      id: '4',
-      sport: 'tennis',
-      league: 'Grand Slam',
-      leagueLogo: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/43/Australian_Open_logo.svg/1200px-Australian_Open_logo.svg.png',
-      status: 'upcoming',
-      time: '14:00',
-      date: new Date('2023-05-14T14:00:00'),
-      homeTeam: { 
-        name: 'Novak Djokovic', 
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Novak_Djokovic_Queen%27s_Club_2018.jpg/640px-Novak_Djokovic_Queen%27s_Club_2018.jpg' 
-      },
-      awayTeam: { 
-        name: 'Rafael Nadal', 
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Rafael_Nadal_10%2C_Aegon_Championships%2C_London%2C_UK_-_Diliff.jpg/640px-Rafael_Nadal_10%2C_Aegon_Championships%2C_London%2C_UK_-_Diliff.jpg' 
-      },
-      score: { home: 0, away: 0 },
-      odds: { local: 1.90, empate: 21.00, visitante: 2.00 }
-    },
-  ]
 
+  ];
+  
   const handleMatchClick = (match) => {
     setSelectedMatch(match)
   }
 
-  const toggleBet = (bet) => {
+  const toggleBet = (bet, bookmaker) => {
     setSelectedBets((prevBets) => {
-      const existingBetIndex = prevBets.findIndex((b) => b.match === bet.match)
+      const existingBetIndex = prevBets.findIndex((b) => b.match === bet.match && b.type === bet.type)
+      
       if (existingBetIndex !== -1) {
-        if (prevBets[existingBetIndex].type === bet.type) {
-          return prevBets.filter((_, index) => index !== existingBetIndex)
-        } else {
-          return prevBets.map((b, index) => (index === existingBetIndex ? bet : b))
-        }
+       
+        return prevBets.map((b, index) => 
+          index === existingBetIndex 
+            ? { ...b, bookmaker, odds: bookmaker.odds } 
+            : b
+        )
       }
-      return [...prevBets, bet]
+      
+
+      return [...prevBets, { ...bet, bookmaker, odds: bookmaker.odds }]
     })
   }
+  
 
   const removeBet = (index) => {
     setSelectedBets(selectedBets.filter((_, i) => i !== index))
   }
+
+
+  const OddsButton = ({ bet }) => (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className={`bg-blue-600 hover:bg-blue-700 text-white`}
+        >
+          {bet.odds}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-60 p-0 bg-gray-800 border-gray-700 text-white">
+        <div className="grid gap-4 p-4">
+          {bookmakers.map((bookmaker) => (
+            <Button
+              key={bookmaker.id}
+              variant="ghost"
+              className="w-full justify-start"
+              onClick={() => toggleBet(bet, bookmaker)}
+            >
+              <Image
+                src={bookmaker.logo}
+                alt={bookmaker.name}
+                width={24}
+                height={24}
+                className="mr-2"
+              />
+              <span>{bookmaker.name}</span>
+              <span className="ml-auto font-bold">{bookmaker.odds}</span>
+            </Button>
+          ))}
+        </div>
+      </PopoverContent>
+    </Popover>
+  )
+  
 
   const clearBets = () => {
     setSelectedBets([])
@@ -227,14 +256,10 @@ export default function ComparatorPage() {
                       <div key={bet.id} className="bg-gray-700 p-3 rounded-lg">
                         <div className="flex justify-between items-center text-sm">
                           <span className="text-gray-300">{bet.type}</span>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="bg-blue-600 hover:bg-blue-700 text-white"
-                            onClick={() => toggleBet({ ...bet, match: `${selectedMatch.homeTeam.name} vs ${selectedMatch.awayTeam.name}` })}
-                          >
-                            {bet.odds}
-                          </Button>
+                          <OddsButton 
+                            bet={{...bet, match: `${selectedMatch.homeTeam.name} vs ${selectedMatch.awayTeam.name}`}}
+                            odds={bet.odds}
+                          />
                         </div>
                       </div>
                     ))}
@@ -243,8 +268,8 @@ export default function ComparatorPage() {
               </CardContent>
             </Card>
           ) : null}
-          
-          <Card className="bg-gray-800 border-gray-700">
+
+       <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
               <CardTitle className="text-white flex items-center">
                 Picks Recomendados
@@ -259,14 +284,7 @@ export default function ComparatorPage() {
                     </div>
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-gray-300">{pick.type}</span>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                        onClick={() => toggleBet(pick)}
-                      >
-                        {pick.odds}
-                      </Button>
+                      <OddsButton bet={pick} odds={pick.odds} />
                     </div>
                   </div>
                 ))}
@@ -361,10 +379,11 @@ export default function ComparatorPage() {
             <div className="space-y-6">
               {filteredMatches.map((match) => (
                 <div key={match.id} onClick={() => handleMatchClick(match)}>
-                  <EnhancedMatchCard
+           <EnhancedMatchCard
                     match={match}
                     selectedBets={selectedBets}
                     toggleBet={toggleBet}
+                    bookmakers={bookmakers}
                   />
                 </div>
               ))}
@@ -397,108 +416,82 @@ export default function ComparatorPage() {
           )}
         </main>
 
-        <aside className="w-full lg:w-1/4 xl:w-1/5 p-4 bg-gray-900">
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center">
-                Tu Apuesta
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <Select value={selectedBookmaker} onValueChange={setSelectedBookmaker}>
-                  <SelectTrigger className="w-full bg-gray-700 text-white">
-                    <SelectValue>
-                      {selectedBookmaker && (
-                        <div className="flex items-center">
-                          <Image
-                            src={bookmakers.find(b => b.id === selectedBookmaker)?.logo}
-                            alt={bookmakers.find(b => b.id === selectedBookmaker)?.name}
-                            width={24}
-                            height={24}
-                            className="mr-2"
-                          />
-                          <span>{bookmakers.find(b => b.id === selectedBookmaker)?.name}</span>
-                        </div>
-                      )}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {bookmakers.map((bookmaker) => (
-                      <SelectItem key={bookmaker.id} value={bookmaker.id}>
-                        <div className="flex items-center">
-                          <Image
-                            src={bookmaker.logo}
-                            alt={bookmaker.name}
-                            width={24}
-                            height={24}
-                            className="mr-2"
-                          />
-                          <span>{bookmaker.name}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
 
-                {selectedBets.length === 0 ? (
-                  <div className="text-center text-gray-400 py-4">
-                    Aún no has seleccionado ninguna apuesta
-                  </div>
-                ) : (
-                  selectedBets.map((bet, index) => (
-                    <div key={index} className="bg-gray-700 p-3 rounded-lg">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-white">{bet.match}</span>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeBet(index)}
-                          className="text-red-400 hover:text-red-300 p-1"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-300">Apuesta por {bet.type}</span>
-                        <span className="text-blue-400 font-bold">{bet.odds}</span>
-                      </div>
-                    </div>
-                  ))
-                )}
-
-                {selectedBets.length > 0 && (
-                  <div className="mt-4 space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-300">Cuota total:</span>
-                      <span className="text-lg font-bold text-blue-400">{calculateTotalOdds()}</span>
-                    </div>
-                    <div>
-                      <label htmlFor="stake" className="block text-sm font-medium text-gray-300 mb-1">
-                        Monto de apuesta
-                      </label>
-                      <Input
-                        id="stake"
-                        type="number"
-                        value={stake}
-                        onChange={(e) => setStake(Number(e.target.value))}
-                        className="bg-gray-700 text-white border-gray-600"
-                      />
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-300">Ganancia potencial:</span>
-                      <span className="text-lg font-bold text-green-400">${calculateProfit()}</span>
-                    </div>
-                    <Button className="w-full bg-green-600 hover:bg-green-700 text-white">Realizar Apuesta</Button>
-                    <Button variant="destructive" className="w-full bg-red-600 hover:bg-red-700 text-white" onClick={clearBets}>
-                      Borrar Apuestas
-                    </Button>
-                  </div>
-                )}
+{/* Bet slip */}
+<aside className="w-full lg:w-1/4 xl:w-1/5 p-4 bg-gray-900">
+  <Card className="bg-gray-800 border-gray-700">
+    <CardHeader>
+      <CardTitle className="text-white flex items-center">
+        Tu Apuesta
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4">
+        {selectedBets.length === 0 ? (
+          <div className="text-center text-gray-400 py-4">
+            Aún no has seleccionado ninguna apuesta
+          </div>
+        ) : (
+          selectedBets.map((bet, index) => (
+            <div key={index} className="bg-gray-700 p-3 rounded-lg">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium text-white">{bet.match}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeBet(index)}
+                  className="text-red-400 hover:text-red-300 p-1"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
-            </CardContent>
-          </Card>
-        </aside>
+              <div className="flex justify-between items-center text-sm mb-2">
+                <span className="text-gray-300">Apuesta por {bet.type}</span>
+                <span className="text-blue-400 font-bold">{bet.odds}</span>
+              </div>
+              <CustomSelect
+                options={bookmakers}
+                selectedOption={bet.bookmaker}
+                onChange={(selectedBookmaker) => toggleBet(bet, selectedBookmaker)}
+              />
+            </div>
+          ))
+        )}
+
+        {selectedBets.length > 0 && (
+          <div className="mt-4 space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-300">Cuota total:</span>
+              <span className="text-lg font-bold text-blue-400">{calculateTotalOdds()}</span>
+            </div>
+            <div>
+              <label htmlFor="stake" className="block text-sm font-medium text-gray-300 mb-1">
+                Monto de apuesta
+              </label>
+              <Input
+                id="stake"
+                type="number"
+                value={stake}
+                onChange={(e) => setStake(Number(e.target.value))}
+                className="bg-gray-700 text-white border-gray-600"
+              />
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-300">Ganancia potencial:</span>
+              <span className="text-lg font-bold text-green-400">${calculateProfit()}</span>
+            </div>
+            <Button className="w-full bg-green-600 hover:bg-green-700 text-white">Realizar Apuesta</Button>
+            <Button variant="destructive" className="w-full bg-red-600 hover:bg-red-700 text-white" onClick={clearBets}>
+              Borrar Apuestas
+            </Button>
+          </div>
+        )}
+      </div>
+    </CardContent>
+  </Card>
+</aside>
+
+
       </div>
     </div>
     </ProtectedRoute>
