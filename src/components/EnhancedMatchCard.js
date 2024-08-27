@@ -12,8 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 export default function EnhancedMatchCard({ match, selectedBets, toggleBet, bookmakers }) {
   const isLive = match.status === 'live';
   const isFinished = match.status === 'finished';
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
   const cardRef = useRef(null);
 
 
@@ -74,9 +73,6 @@ export default function EnhancedMatchCard({ match, selectedBets, toggleBet, book
     <div 
       ref={cardRef}
       className="relative"
-      onMouseEnter={() => setShowTooltip(true)}
-      onMouseLeave={() => setShowTooltip(false)}
-      onMouseMove={handleMouseMove}
     >
       <Card className="bg-gray-800 border-gray-700 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300">
         <CardHeader className="bg-gray-700 p-4">
