@@ -16,15 +16,6 @@ export default function EnhancedMatchCard({ match, selectedBets, toggleBet, book
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
 
-  const handleMouseMove = useCallback((e) => {
-    if (cardRef.current) {
-      const rect = cardRef.current.getBoundingClientRect();
-      setTooltipPosition({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top + 20, // 20px below the cursor
-      });
-    }
-  }, []);
 
   const OddsButton = ({type, bet, isSelected }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -182,19 +173,7 @@ export default function EnhancedMatchCard({ match, selectedBets, toggleBet, book
           </div>
         </CardContent>
       </Card>
-      {showTooltip && (
-        <div 
-          className="absolute bg-gray-900 text-white px-3 py-2 rounded text-sm z-50 pointer-events-none flex items-center"
-          style={{ 
-            left: `${tooltipPosition.x}px`, 
-            top: `${tooltipPosition.y}px`,
-            transform: 'translate(-50%, 0)'
-          }}
-        >
-          <Info className="w-4 h-4 mr-2" />
-          <span>Click para ver información sobre este partido</span>
-        </div>
-      )}
+     
     </div>
   );
 }
